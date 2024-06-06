@@ -13,7 +13,7 @@ let db;
 async function run() {
   try {
     await client.connect();
-    db = client.db("PetAdoptionBackend", { ping: 1 });
+    db = client.db("PazaSocialWebDB", { ping: 1 });
 
     console.log("You successfully connected to MongoDB!");
   } catch (error) {
