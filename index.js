@@ -21,11 +21,7 @@ app.use((req, res, next) => {
 
 //routes
 
-//test route
-app.use("/", (req, res, next) => {
-  res.send("Hello World");
-  next();
-});
+app.use("/auth", require("./routes/auth.routes"));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}...`);
