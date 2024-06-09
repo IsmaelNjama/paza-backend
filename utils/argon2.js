@@ -12,10 +12,14 @@ module.exports = {
     });
   },
   verifyPassword: (password, hash) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        const passwordMatch = argon2.verify(hash, password);
-        resolve(passwordMatch);
+        const isVerified = await argon2.verify(hash, password);
+        if (isVerified) {
+          resolve();
+        } else {
+          reject();
+        }
       } catch (err) {
         reject(err);
       }
