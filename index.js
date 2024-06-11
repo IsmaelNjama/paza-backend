@@ -4,8 +4,10 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
+const authMiddleware = require("./middlewares/auth.middleware");
+const errorHandlerMiddleware = require("./middlewares/errorHandler.middleware");
 
-//Middleware
+//Middlewares
 app.use(express.json());
 
 app.use(
@@ -14,14 +16,12 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  console.log("Middleware working...");
-  next();
-});
+app.use(authMiddleware);
 
 //routes
-
 app.use("/auth", require("./routes/auth.routes"));
+
+app.use(errorHandlerMiddleware);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}...`);

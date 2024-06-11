@@ -16,9 +16,21 @@ const services = {
     return new Promise(async (resolve, reject) => {
       try {
         const user = await services.addUser({ ...body, password: hash });
+
         resolve(user);
       } catch (error) {
         reject(error);
+      }
+    });
+  },
+
+  clearUser: (user) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        delete user.password;
+        resolve();
+      } catch (error) {
+        reject();
       }
     });
   },
