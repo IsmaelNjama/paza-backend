@@ -16,7 +16,7 @@ async function sendVerificationEmail(email, token) {
       to: email,
       subject: "Verify your email",
       html: `<p>Please click on the following link to verify your email:</p>
-              <a href="http://localhost:5050/auth/verify/:${token}">Verify Email</a>`,
+              <a href="http://localhost:5050/auth/verify/${token}">Verify Email</a>`,
     };
 
     const info = await transporter.sendMail(mailOptions);

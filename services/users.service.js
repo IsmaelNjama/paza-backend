@@ -46,23 +46,25 @@ const services = {
     });
   },
 
-  getUserByVerificationToken: async (token) => {
-    try {
-      const user = await users().findOne({ token });
-      return user;
-    } catch (error) {
-      throw new Error("Error finding user by verification token");
-    }
-  },
-
   updateUser: (id, body) => {
     return new Promise(async (resolve, reject) => {
       try {
         const updatedUser = await users().updateOne(
-          { _id: ObjectId(id) },
+          { _id: ObjectId.createFromHexString(id) },
           { $set: body }
         );
         resolve(updatedUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  getVerifiedUser: async (token) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await users().findOne({ verificationToken: token });
+        resolve(user);
       } catch (error) {
         reject(error);
       }

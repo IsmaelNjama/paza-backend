@@ -40,14 +40,18 @@ module.exports = {
   verifyEmail: async (req, res, next) => {
     try {
       const { token } = req.params;
-      console.log("body", req.body);
 
       console.log("token email", token);
       if (!token) {
         return next(ERR_UNPROCESSABLE);
       }
-      const user = await usersService.getUserByVerificationToken(token);
-      console.log("🚀 ~ verifyEmail: ~ user:", user);
+      const user = await usersService.getVerifiedUser(token);
+      console.log("🚀 ~ verifyEmail: ~ user:", user._id);
+
+      if (!user) {
+        return next(ERR_NOT_FOUND);
+      }
+
       res.status(200).send("User verified successfully");
     } catch (error) {
       next(error);
