@@ -3,4 +3,6 @@ module.exports = {
   ERR_REGISTER_ALREADY_EXIST: [409, "Email already Registered"],
   ERR_BAD_REQUEST: [400, "email or password incorrect"],
   ERR_INTERNAL_SERVER: [500, "Internal Server Error"],
+  ERR_UNPROCESSABLE: [422, "Missing Token"],
+  ERR_FORBIDDEN: [403, "Forbidden"],
 };

@@ -1,15 +1,17 @@
 const usersService = require("../services/users.service");
 const { hashPassword, verifyPassword } = require("../utils/argon2");
+const sendVerificationEmail = require("../utils/email");
 const {
   ERR_NOT_FOUND,
   ERR_REGISTER_ALREADY_EXIST,
   ERR_BAD_REQUEST,
+  ERR_UNPROCESSABLE,
 } = require("../utils/error");
-const jwt = require("../utils/jwt");
+const crypto = require("crypto");
 
 module.exports = {
   signupUser: async (req, res, next) => {
-    const { password } = req.body;
+    const { email, password } = req.body;
     try {
       const userExist = await usersService.getUserByEmail(req.body.email);
       if (userExist) {
@@ -17,8 +19,36 @@ module.exports = {
       }
       const hash = await hashPassword(password);
 
-      const newUser = await usersService.addNormalUser(req.body, hash);
-      res.status(201).send(newUser);
+      const token = crypto.randomBytes(64).toString("hex");
+      await sendVerificationEmail(email, token);
+
+      await usersService.addNormalUser(
+        {
+          ...req.body,
+          isVerified: false,
+          verificationToken: token,
+        },
+        hash
+      );
+
+      res.status(201).send("User created successfully");
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  verifyEmail: async (req, res, next) => {
+    try {
+      const { token } = req.params;
+      console.log("body", req.body);
+
+      console.log("token email", token);
+      if (!token) {
+        return next(ERR_UNPROCESSABLE);
+      }
+      const user = await usersService.getUserByVerificationToken(token);
+      console.log("🚀 ~ verifyEmail: ~ user:", user);
+      res.status(200).send("User verified successfully");
     } catch (error) {
       next(error);
     }

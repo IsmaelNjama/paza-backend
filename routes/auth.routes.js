@@ -6,5 +6,6 @@ const signupUserSchema = require("../schema/signupUsers.schema");
 
 router.post("/login", authController.loginUser);
 router.post("/signup", validate(signupUserSchema), authController.signupUser);
+router.get("/verify/:token", authController.verifyEmail);
 
 module.exports = router;
