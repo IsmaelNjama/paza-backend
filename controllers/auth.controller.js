@@ -6,7 +6,9 @@ const {
   ERR_REGISTER_ALREADY_EXIST,
   ERR_BAD_REQUEST,
   ERR_UNPROCESSABLE,
+  ERR_UNAUTHORIZED,
 } = require("../utils/error");
+const jwt = require("../utils/jwt");
 const crypto = require("crypto");
 
 module.exports = {
@@ -22,7 +24,7 @@ module.exports = {
       const token = crypto.randomBytes(64).toString("hex");
       await sendVerificationEmail(email, token);
 
-      await usersService.addNormalUser(
+      const user = await usersService.addNormalUser(
         {
           ...req.body,
           isVerified: false,
@@ -31,7 +33,7 @@ module.exports = {
         hash
       );
 
-      res.status(201).send("User created successfully");
+      res.status(201).send(user);
     } catch (error) {
       next(error);
     }
@@ -41,17 +43,15 @@ module.exports = {
     try {
       const { token } = req.params;
 
-      console.log("token email", token);
       if (!token) {
         return next(ERR_UNPROCESSABLE);
       }
       const user = await usersService.getVerifiedUser(token);
-      console.log("🚀 ~ verifyEmail: ~ user:", user._id);
 
       if (!user) {
         return next(ERR_NOT_FOUND);
       }
-
+      await usersService.updateVerifiedUser(user._id);
       res.status(200).send("User verified successfully");
     } catch (error) {
       next(error);
@@ -66,12 +66,16 @@ module.exports = {
       if (!user) {
         return next(ERR_NOT_FOUND);
       }
-
+      const checkUserVerificationStatus = user.isVerified;
+      if (!checkUserVerificationStatus) {
+        return next(ERR_UNAUTHORIZED);
+      }
       await verifyPassword(password, user.password);
 
       usersService.clearUser(user);
 
       const payload = { id: user._id.toString() };
+
       const token = jwt.sign(payload);
 
       res.status(200).send({ token, user });

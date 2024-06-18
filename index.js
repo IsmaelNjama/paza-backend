@@ -20,6 +20,7 @@ app.use(authMiddleware);
 
 //routes
 app.use("/auth", require("./routes/auth.routes"));
+app.use("/users", require("./routes/users.routes"));
 
 app.use(errorHandlerMiddleware);
 

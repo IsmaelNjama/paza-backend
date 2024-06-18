@@ -35,6 +35,18 @@ const services = {
     });
   },
 
+  getUserById: (id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const objectId = ObjectId.createFromHexString(id);
+        const user = await users().findOne({ _id: objectId });
+        resolve(user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   getUserByEmail: (email) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -49,8 +61,9 @@ const services = {
   updateUser: (id, body) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const objectId = ObjectId.createFromHexString(id);
         const updatedUser = await users().updateOne(
-          { _id: ObjectId.createFromHexString(id) },
+          { _id: objectId },
           { $set: body }
         );
         resolve(updatedUser);
@@ -65,6 +78,20 @@ const services = {
       try {
         const user = await users().findOne({ verificationToken: token });
         resolve(user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  updateVerifiedUser: async (id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const updatedUser = await users().updateOne(
+          { _id: id },
+          { $set: { isVerified: true }, $unset: { verificationToken: "" } }
+        );
+        resolve(updatedUser);
       } catch (error) {
         reject(error);
       }
