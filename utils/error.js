@@ -8,4 +8,5 @@ module.exports = {
   ERR_NOT_ACCEPTABLE: [406, "Not Acceptable"],
   ERR_TOO_MANY_REQUESTS: [429, "Too Many Requests"],
   ERR_FORBIDDEN: [403, "Forbidden"],
+  ERR_INVALID: [498, "Try again later"],
 };
