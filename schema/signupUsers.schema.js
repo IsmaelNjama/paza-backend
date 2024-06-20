@@ -4,7 +4,7 @@ const schema = {
     firstname: { type: "string", isNotEmpty: true },
     lastname: { type: "string", isNotEmpty: true },
     email: { type: "string", format: "email", isNotEmpty: true },
-    birthday: { type: "string", format: "date", isNotEmpty: true },
+    birthday: { type: "string", isNotEmpty: true },
     gender: { type: "string", isNotEmpty: true },
     phone: { type: "string", isNotEmpty: true },
     city: { type: "string", isNotEmpty: true },
