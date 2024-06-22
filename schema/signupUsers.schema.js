@@ -9,7 +9,11 @@ const schema = {
     phone: { type: "string", isNotEmpty: true },
     city: { type: "string", isNotEmpty: true },
     password: { type: "string", isNotEmpty: true },
-    account: { type: "object" },
+    account: {
+      type: "object",
+
+      additionalProperties: true,
+    },
   },
   required: [
     "firstname",
