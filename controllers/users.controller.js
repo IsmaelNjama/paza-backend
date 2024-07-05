@@ -5,6 +5,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const user = await services.getUserById(id);
+      await services.clearUser(user);
       res.send(user);
     } catch (error) {
       next(error);

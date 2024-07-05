@@ -1,6 +1,6 @@
 const usersService = require("../services/users.service");
 const { hashPassword, verifyPassword } = require("../utils/argon2");
-const sendVerificationEmail = require("../utils/email");
+const { sendVerificationEmail } = require("../utils/email");
 const {
   ERR_NOT_FOUND,
   ERR_REGISTER_ALREADY_EXIST,
@@ -52,7 +52,11 @@ module.exports = {
         return next(ERR_NOT_FOUND);
       }
       await usersService.updateVerifiedUser(user._id);
-      res.status(200).send("User verified successfully");
+      res
+        .status(200)
+        .send(
+          "User verified successfully. You can close this window and proceed to login"
+        );
     } catch (error) {
       next(error);
     }
