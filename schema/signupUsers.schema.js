@@ -14,6 +14,7 @@ const schema = {
 
       additionalProperties: true,
     },
+    createdAt: { type: "string", format: "date-time" },
   },
   required: [
     "firstname",

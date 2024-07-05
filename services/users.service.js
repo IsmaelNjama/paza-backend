@@ -15,7 +15,12 @@ const services = {
   addNormalUser: (body, hash) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const user = await services.addUser({ ...body, password: hash });
+        const timestamp = new Date().toISOString();
+        const user = await services.addUser({
+          ...body,
+          password: hash,
+          createdAt: timestamp,
+        });
 
         resolve(user);
       } catch (error) {
