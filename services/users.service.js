@@ -102,6 +102,30 @@ const services = {
       }
     });
   },
+  getUserByAccountCode: async (code) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await users().findOne({ "account.code": code });
+        resolve(user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  updateUserAccountMembers: async (id, members) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const objectId = ObjectId.createFromHexString(id);
+        const updatedUser = await users().updateOne(
+          { _id: objectId },
+          { $set: { "account.members": members } }
+        );
+        resolve(updatedUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 module.exports = services;
