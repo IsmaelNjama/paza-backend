@@ -1,5 +1,9 @@
 const services = require("../services/users.service");
-const { ERR_INVALID_CODE, ERR_MISSING_CODE } = require("../utils/error");
+const {
+  ERR_INVALID_CODE,
+  ERR_MISSING_CODE,
+  ERR_USER_ALREADY_MEMBER,
+} = require("../utils/error");
 
 module.exports = {
   getUserById: async (req, res, next) => {
@@ -36,7 +40,16 @@ module.exports = {
         return next(ERR_INVALID_CODE);
       }
 
-      const updatedMembers = [...adminUser.account.members, user];
+      const existingMembers = adminUser.account.members;
+
+      const userExists = existingMembers.some(
+        (member) => member._id.toString() === user._id.toString()
+      );
+      if (userExists) {
+        return next(ERR_USER_ALREADY_MEMBER);
+      }
+
+      const updatedMembers = [...existingMembers, user];
 
       const adminUserId = adminUser._id.toString();
 
