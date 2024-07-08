@@ -11,4 +11,5 @@ module.exports = {
   ERR_FORBIDDEN: [403, "Forbidden"],
   ERR_INVALID: [498, "Try again later"],
   ERR_INVALID_CODE: [422, "Invalid invitation Code"],
+  ERR_USER_ALREADY_MEMBER: [409, "User already a member"],
 };
