@@ -94,7 +94,10 @@ const services = {
       try {
         const updatedUser = await users().updateOne(
           { _id: id },
-          { $set: { isVerified: true }, $unset: { verificationToken: "" } }
+          {
+            $set: { isVerified: true, account: {} },
+            $unset: { verificationToken: "" },
+          }
         );
         resolve(updatedUser);
       } catch (error) {
