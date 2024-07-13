@@ -35,7 +35,6 @@ module.exports = {
       if (!inviteCode) return next(ERR_MISSING_CODE);
 
       const adminUser = await services.getUserByAccountCode(inviteCode);
-      console.log("🚀 ~ inviteUser: ~ adminUser:", adminUser);
 
       if (!adminUser) {
         return next(ERR_INVALID_CODE);
