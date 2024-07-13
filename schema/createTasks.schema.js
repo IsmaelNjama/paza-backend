@@ -50,3 +50,5 @@ const schema = {
   ],
   additionalProperties: true,
 };
+
+module.exports = schema;
