@@ -7,5 +7,8 @@ const validate = require("../utils/schemaValidate");
 
 router.post("/create", validate(createTaskSchema), tasksController.createTask);
 router.get("/", tasksController.getTasks);
+router.get("/:id", tasksController.getTaskById);
+router.put("/:id", tasksController.updateTask);
+router.delete("/:id", tasksController.deleteTask);
 
 module.exports = router;
