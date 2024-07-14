@@ -1,19 +1,34 @@
 const tasksService = require("../services/tasks.service");
+const { ERR_TASKS_NOT_FOUND } = require("../utils/error");
 
 module.exports = {
   getTasks: async (req, res, next) => {
     try {
       const tasks = await tasksService.getTasks();
+
+      if (!tasks || tasks.length === 0) {
+        return next(ERR_TASKS_NOT_FOUND);
+      }
       res.status(200).send(tasks);
     } catch (error) {
+      console.error(error);
       next(error);
     }
   },
 
-  // getTask: async (req, res) => {
-  //   const task = await tasksService.getTask(req.params.id);
-  //   res.json(task);
-  // },
+  getTaskById: async (req, res, next) => {
+    try {
+      const task = await tasksService.getTaskById(req.params.id);
+
+      if (!task) {
+        return next(ERR_TASKS_NOT_FOUND);
+      }
+      res.status(200).send(task);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  },
 
   createTask: async (req, res, next) => {
     try {
@@ -24,13 +39,26 @@ module.exports = {
     }
   },
 
-  // updateTask: async (req, res) => {
-  //   const task = await tasksService.updateTask(req.params.id, req.body);
-  //   res.json(task);
-  // },
+  updateTask: async (req, res, next) => {
+    try {
+      const task = await tasksService.updateTask(req.params.id, req.body);
+      console.log(task.modifiedCount);
+      if (task.modifiedCount === 1) {
+        res.status(200).send("Task updated successfully");
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
 
-  // deleteTask: async (req, res) => {
-  //   const task = await tasksService.deleteTask(req.params.id);
-  //   res.json(task);
-  // },
+  deleteTask: async (req, res, next) => {
+    try {
+      const task = await tasksService.deleteTask(req.params.id);
+      if (task.deletedCount === 1) {
+        res.status(200).send("Task deleted successfully");
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
 };

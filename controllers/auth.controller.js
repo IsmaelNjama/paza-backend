@@ -2,7 +2,7 @@ const usersService = require("../services/users.service");
 const { hashPassword, verifyPassword } = require("../utils/argon2");
 const { sendVerificationEmail } = require("../utils/email");
 const {
-  ERR_NOT_FOUND,
+  ERR_USER_NOT_FOUND,
   ERR_REGISTER_ALREADY_EXIST,
   ERR_BAD_REQUEST,
   ERR_UNPROCESSABLE,
@@ -49,7 +49,7 @@ module.exports = {
       const user = await usersService.getVerifiedUser(token);
 
       if (!user) {
-        return next(ERR_NOT_FOUND);
+        return next(ERR_USER_NOT_FOUND);
       }
       await usersService.updateVerifiedUser(user._id);
       res
@@ -68,7 +68,7 @@ module.exports = {
       const user = await usersService.getUserByEmail(email);
 
       if (!user) {
-        return next(ERR_NOT_FOUND);
+        return next(ERR_USER_NOT_FOUND);
       }
       const checkUserVerificationStatus = user.isVerified;
       if (!checkUserVerificationStatus) {
