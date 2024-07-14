@@ -37,6 +37,7 @@ const schema = {
       type: "string",
       isNotEmpty: true,
     },
+    createdAt: { type: "string", format: "date-time" },
   },
   required: [
     "task",
@@ -46,7 +47,7 @@ const schema = {
     "start",
     "due",
     "repeat",
-    "desc",
+    "description",
   ],
   additionalProperties: true,
 };
