@@ -1,10 +1,14 @@
 const tasksService = require("../services/tasks.service");
 
 module.exports = {
-  // getTasks: async (req, res) => {
-  //   const tasks = await tasksService.getTasks();
-  //   res.json(tasks);
-  // },
+  getTasks: async (req, res, next) => {
+    try {
+      const tasks = await tasksService.getTasks();
+      res.status(200).send(tasks);
+    } catch (error) {
+      next(error);
+    }
+  },
 
   // getTask: async (req, res) => {
   //   const task = await tasksService.getTask(req.params.id);

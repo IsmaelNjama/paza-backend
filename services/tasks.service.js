@@ -1,6 +1,16 @@
 const tasks = require("../utils/mongodb").tasks;
 
 const services = {
+  getTasks: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const tasksList = await tasks().find({}).toArray();
+        resolve(tasksList);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
   createTask: (body) => {
     return new Promise(async (resolve, reject) => {
       try {
