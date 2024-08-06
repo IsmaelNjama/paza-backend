@@ -33,9 +33,9 @@ const services = {
     return new Promise(async (resolve, reject) => {
       try {
         delete user.password;
-        resolve();
+        resolve(user);
       } catch (error) {
-        reject();
+        reject(error);
       }
     });
   },
@@ -124,6 +124,19 @@ const services = {
           { $set: { "account.members": members } }
         );
         resolve(updatedUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  getMembers: async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const members = await users().find({ account: {} }).toArray();
+        const clearedMembers = await Promise.all(
+          members.map((member) => services.clearUser(member))
+        );
+        resolve(clearedMembers);
       } catch (error) {
         reject(error);
       }
