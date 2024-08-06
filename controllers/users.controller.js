@@ -68,4 +68,12 @@ module.exports = {
       next(error);
     }
   },
+  getMembers: async (req, res, next) => {
+    try {
+      const members = await services.getMembers();
+      res.send(members);
+    } catch (error) {
+      next(error);
+    }
+  },
 };

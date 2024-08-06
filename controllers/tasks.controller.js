@@ -42,7 +42,7 @@ module.exports = {
   updateTask: async (req, res, next) => {
     try {
       const task = await tasksService.updateTask(req.params.id, req.body);
-      console.log(task.modifiedCount);
+
       if (task.modifiedCount === 1) {
         res.status(200).send("Task updated successfully");
       }
