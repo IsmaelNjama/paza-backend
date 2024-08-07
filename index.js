@@ -22,6 +22,7 @@ app.use(isAuthMiddleware);
 app.use("/auth", require("./routes/auth.routes"));
 app.use("/users", require("./routes/users.routes"));
 app.use("/tasks", require("./routes/tasks.routes"));
+app.use("/emails", require("./routes/emails.routes"));
 
 app.use(errorHandlerMiddleware);
 
