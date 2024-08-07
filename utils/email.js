@@ -26,4 +26,28 @@ const sendVerificationEmail = async (email, token) => {
   }
 };
 
-module.exports = { sendVerificationEmail };
+const sendEmailNotification = async (email, subject, text) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: subject,
+      text: text,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info.response);
+  } catch (error) {
+    console.error("Error sending email:", error.message); // Log detailed error message
+  }
+};
+
+module.exports = { sendVerificationEmail, sendEmailNotification };
