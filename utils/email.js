@@ -49,7 +49,7 @@ const sendEmailNotification = async (email, subject, text) => {
     console.error("Error sending email:", error.message); // Log detailed error message
   }
 };
-const sendPasswordResetEmail = async (email, token) => {
+const sendPasswordResetEmail = async (email, resetToken) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -64,7 +64,7 @@ const sendPasswordResetEmail = async (email, token) => {
       to: email,
       subject: "Reset your password",
       html: `<p>You requested a password reset.Please click on the following link to reset your password:</p>
-                <a href="http://localhost:5050/auth/forgot-password/${token}">Reset Password</a>`,
+                <a href="http://localhost:5050/auth/reset-password/${resetToken}">Reset Password</a>`,
     };
 
     const info = await transporter.sendMail(mailOptions);
