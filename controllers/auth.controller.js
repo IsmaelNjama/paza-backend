@@ -1,6 +1,9 @@
 const usersService = require("../services/users.service");
 const { hashPassword, verifyPassword } = require("../utils/argon2");
-const { sendVerificationEmail } = require("../utils/email");
+const {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+} = require("../utils/email");
 const {
   ERR_USER_NOT_FOUND,
   ERR_REGISTER_ALREADY_EXIST,
@@ -87,4 +90,43 @@ module.exports = {
       next(ERR_BAD_REQUEST);
     }
   },
+  forgotPassword: async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      // Check if the email exists in users database
+      const user = await usersService.getUserByEmail(email);
+      if (!user) {
+        return next(ERR_USER_NOT_FOUND);
+      }
+      const token = crypto.randomBytes(64).toString("hex");
+
+      const response = await usersService.updatePasswordResetToken(
+        user._id,
+        token
+      );
+      if (response.acknowledged === true) {
+        await sendPasswordResetEmail(email, token);
+      }
+
+      // await sendVerificationEmail(email, token);
+      res.status(200).send("Password reset email sent successfully");
+    } catch (error) {
+      next(error);
+    }
+  },
+  // resetPassword: async (req, res, next) => {
+  //   try {
+  //     const { token } = req.params;
+  //     const { password } = req.body;
+  //     const user = await usersService.getUserByResetToken(token);
+  //     if (!user) {
+  //       return next(ERR_USER_NOT_FOUND);
+  //     }
+  //     const hash = await hashPassword(password);
+  //     await usersService.updatePassword(user._id, hash);
+  //     res.status(200).send("Password reset successfully");
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
 };

@@ -49,5 +49,33 @@ const sendEmailNotification = async (email, subject, text) => {
     console.error("Error sending email:", error.message); // Log detailed error message
   }
 };
+const sendPasswordResetEmail = async (email, token) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
 
-module.exports = { sendVerificationEmail, sendEmailNotification };
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: "Reset your password",
+      html: `<p>You requested a password reset.Please click on the following link to reset your password:</p>
+                <a href="http://localhost:5050/auth/forgot-password/${token}">Reset Password</a>`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info.response);
+  } catch (error) {
+    console.error("Error sending email:", error.message); // Log detailed error message
+  }
+};
+
+module.exports = {
+  sendVerificationEmail,
+  sendEmailNotification,
+  sendPasswordResetEmail,
+};

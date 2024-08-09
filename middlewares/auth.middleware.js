@@ -6,6 +6,7 @@ module.exports = async (req, res, next) => {
   const publicRoutes = [
     { method: "POST", path: "/auth/signup" },
     { method: "POST", path: "/auth/login" },
+    { method: "POST", path: "/auth/forgot-password" },
     { method: "GET", path: /^\/auth\/verify\/[^/]+$/ },
   ];
   const isPublicRoute = publicRoutes.some((route) =>

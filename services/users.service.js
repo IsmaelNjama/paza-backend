@@ -142,6 +142,19 @@ const services = {
       }
     });
   },
+  updatePasswordResetToken: async (id, token) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const updatedUser = await users().updateOne(
+          { _id: id },
+          { $set: { passwordResetToken: token } }
+        );
+        resolve(updatedUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 module.exports = services;
