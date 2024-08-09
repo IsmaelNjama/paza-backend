@@ -13,4 +13,5 @@ module.exports = {
   ERR_INVALID: [498, "Try again later"],
   ERR_INVALID_CODE: [422, "Invalid invitation Code"],
   ERR_USER_ALREADY_MEMBER: [409, "User already a member"],
+  ERR_PASSWORD_TOKEN_EXPIRED: [401, "Password reset token has expired"],
 };

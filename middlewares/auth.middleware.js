@@ -8,6 +8,7 @@ module.exports = async (req, res, next) => {
     { method: "POST", path: "/auth/login" },
     { method: "POST", path: "/auth/forgot-password" },
     { method: "GET", path: /^\/auth\/verify\/[^/]+$/ },
+    { method: "GET", path: /^\/auth\/reset-password\/[^/]+$/ },
   ];
   const isPublicRoute = publicRoutes.some((route) =>
     route.method === req.method && route.path instanceof RegExp

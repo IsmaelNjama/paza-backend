@@ -8,5 +8,6 @@ router.post("/login", authController.loginUser);
 router.post("/signup", validate(signupUserSchema), authController.signupUser);
 router.get("/verify/:token", authController.verifyEmail);
 router.post("/forgot-password", authController.forgotPassword);
+router.get("/reset-password/:resetToken", authController.getPasswordResetToken);
 
 module.exports = router;

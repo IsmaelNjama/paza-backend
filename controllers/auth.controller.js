@@ -10,6 +10,7 @@ const {
   ERR_BAD_REQUEST,
   ERR_UNPROCESSABLE,
   ERR_UNAUTHORIZED,
+  ERR_PASSWORD_TOKEN_EXPIRED,
 } = require("../utils/error");
 const jwt = require("../utils/jwt");
 const crypto = require("crypto");
@@ -99,24 +100,49 @@ module.exports = {
         return next(ERR_USER_NOT_FOUND);
       }
       const token = crypto.randomBytes(64).toString("hex");
+      const payload = { token };
+
+      const resetToken = jwt.sign(payload);
 
       const response = await usersService.updatePasswordResetToken(
         user._id,
-        token
+        resetToken
       );
       if (response.acknowledged === true) {
-        await sendPasswordResetEmail(email, token);
+        await sendPasswordResetEmail(email, resetToken);
       }
 
-      // await sendVerificationEmail(email, token);
       res.status(200).send("Password reset email sent successfully");
     } catch (error) {
       next(error);
     }
   },
+
+  getPasswordResetToken: async (req, res, next) => {
+    try {
+      const { resetToken } = req.params;
+      if (!resetToken) {
+        return next(ERR_UNPROCESSABLE);
+      }
+
+      jwt.verify(resetToken);
+
+      const user = await usersService.getUserByPasswordResetToken(resetToken);
+      if (!user) {
+        return next(ERR_USER_NOT_FOUND);
+      }
+      res.redirect(`http://localhost:3000/resetpassword?token=${resetToken}`);
+    } catch (error) {
+      if (error.name === "TokenExpiredError") {
+        return next(ERR_PASSWORD_TOKEN_EXPIRED);
+      }
+      console.error(error);
+      next(error);
+    }
+  },
   // resetPassword: async (req, res, next) => {
   //   try {
-  //     const { token } = req.params;
+  //     const { resetToken } = req.params;
   //     const { password } = req.body;
   //     const user = await usersService.getUserByResetToken(token);
   //     if (!user) {

@@ -142,14 +142,25 @@ const services = {
       }
     });
   },
-  updatePasswordResetToken: async (id, token) => {
+  updatePasswordResetToken: async (id, resetToken) => {
     return new Promise(async (resolve, reject) => {
       try {
         const updatedUser = await users().updateOne(
           { _id: id },
-          { $set: { passwordResetToken: token } }
+          { $set: { passwordResetToken: resetToken } }
         );
         resolve(updatedUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  getUserByPasswordResetToken: async (resetToken) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await users().findOne({ passwordResetToken: resetToken });
+        resolve(user);
       } catch (error) {
         reject(error);
       }
