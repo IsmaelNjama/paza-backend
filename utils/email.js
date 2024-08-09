@@ -39,8 +39,9 @@ const sendEmailNotification = async (email, subject, text) => {
     const mailOptions = {
       from: process.env.SMTP_USER,
       to: email,
-      subject: subject,
-      text: text,
+      subject: `${subject}`,
+      text: `Hello,\n\n${text}\n`,
+      html: `<p>Hello,</p><p>${text}</p><p>Best regards,<br>Paza Platform</p>`,
     };
 
     const info = await transporter.sendMail(mailOptions);
