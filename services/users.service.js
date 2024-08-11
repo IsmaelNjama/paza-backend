@@ -166,6 +166,19 @@ const services = {
       }
     });
   },
+  updatePassword: async (id, hash) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const updatedUser = await users().updateOne(
+          { _id: id },
+          { $set: { password: hash }, $unset: { passwordResetToken: "" } }
+        );
+        resolve(updatedUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 module.exports = services;
