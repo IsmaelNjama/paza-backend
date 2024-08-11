@@ -7,6 +7,7 @@ module.exports = async (req, res, next) => {
     { method: "POST", path: "/auth/signup" },
     { method: "POST", path: "/auth/login" },
     { method: "POST", path: "/auth/forgot-password" },
+    { method: "POST", path: "/auth/reset-password" },
     { method: "GET", path: /^\/auth\/verify\/[^/]+$/ },
     { method: "GET", path: /^\/auth\/reset-password\/[^/]+$/ },
   ];

@@ -131,7 +131,9 @@ module.exports = {
       if (!user) {
         return next(ERR_USER_NOT_FOUND);
       }
-      res.redirect(`http://localhost:3000/resetpassword?token=${resetToken}`);
+      res.redirect(
+        `http://localhost:3000/resetpassword?resetToken=${resetToken}`
+      );
     } catch (error) {
       if (error.name === "TokenExpiredError") {
         return next(ERR_PASSWORD_TOKEN_EXPIRED);
@@ -140,19 +142,23 @@ module.exports = {
       next(error);
     }
   },
-  // resetPassword: async (req, res, next) => {
-  //   try {
-  //     const { resetToken } = req.params;
-  //     const { password } = req.body;
-  //     const user = await usersService.getUserByResetToken(token);
-  //     if (!user) {
-  //       return next(ERR_USER_NOT_FOUND);
-  //     }
-  //     const hash = await hashPassword(password);
-  //     await usersService.updatePassword(user._id, hash);
-  //     res.status(200).send("Password reset successfully");
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
+  resetPassword: async (req, res, next) => {
+    try {
+      const { resetToken } = req.query;
+      if (!resetToken) {
+        return next(ERR_UNPROCESSABLE);
+      }
+      const { password } = req.body;
+      const user = await usersService.getUserByPasswordResetToken(resetToken);
+
+      if (!user) {
+        return next(ERR_USER_NOT_FOUND);
+      }
+      const hash = await hashPassword(password);
+      await usersService.updatePassword(user._id, hash);
+      res.status(200).send("Password reset successfully");
+    } catch (error) {
+      next(error);
+    }
+  },
 };
