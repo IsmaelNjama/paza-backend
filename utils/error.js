@@ -14,4 +14,9 @@ module.exports = {
   ERR_INVALID_CODE: [422, "Invalid invitation Code"],
   ERR_USER_ALREADY_MEMBER: [409, "User already a member"],
   ERR_PASSWORD_TOKEN_EXPIRED: [401, "Password reset token has expired"],
+  ERR_PASSWORD_RESET_REQUIRED: [
+    401,
+    "You  attempted to reset password.Please check your email for the reset link and try again",
+  ],
+  ERR_CAMPAIGN_NOT_FOUND: [404, "No campaigns available at the moment."],
 };

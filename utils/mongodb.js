@@ -28,4 +28,7 @@ module.exports = {
   tasks: () => {
     return db.collection("tasks");
   },
+  campaigns: () => {
+    return db.collection("campaigns");
+  },
 };
