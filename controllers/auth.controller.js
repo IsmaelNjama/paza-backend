@@ -10,7 +10,7 @@ const {
   ERR_BAD_REQUEST,
   ERR_UNPROCESSABLE,
   ERR_UNAUTHORIZED,
-  ERR_PASSWORD_TOKEN_EXPIRED,
+  ERR_PASSWORD_RESET_REQUIRED,
 } = require("../utils/error");
 const jwt = require("../utils/jwt");
 const crypto = require("crypto");
@@ -78,6 +78,12 @@ module.exports = {
       if (!checkUserVerificationStatus) {
         return next(ERR_UNAUTHORIZED);
       }
+
+      // Check if the user has attempted to reset their password
+      if (user.passwordResetToken) {
+        return next(ERR_PASSWORD_RESET_REQUIRED);
+      }
+
       await verifyPassword(password, user.password);
 
       usersService.clearUser(user);

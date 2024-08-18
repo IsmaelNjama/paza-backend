@@ -1,35 +1,11 @@
 const schema = {
   type: "object",
   properties: {
-    task: {
+    title: {
       type: "string",
       isNotEmpty: true,
     },
-    assignee: {
-      type: "string",
-      isNotEmpty: true,
-    },
-    priority: {
-      type: "string",
-      isNotEmpty: true,
-    },
-    budget: {
-      type: "string",
-      isNotEmpty: true,
-    },
-    status: {
-      type: "string",
-      isNotEmpty: true,
-    },
-    start: {
-      type: "string",
-      isNotEmpty: true,
-    },
-    due: {
-      type: "string",
-      isNotEmpty: true,
-    },
-    repeat: {
+    category: {
       type: "string",
       isNotEmpty: true,
     },
@@ -37,17 +13,52 @@ const schema = {
       type: "string",
       isNotEmpty: true,
     },
-    createdAt: { type: "string", format: "date-time" },
+    location: {
+      type: "string",
+      isNotEmpty: true,
+    },
+    phone: {
+      type: "string",
+      isNotEmpty: true,
+    },
+    age: {
+      type: "boolean",
+      isNotEmpty: true,
+    },
+    docs: {
+      type: "boolean",
+      isNotEmpty: true,
+    },
+    cards: {
+      type: "boolean",
+      isNotEmpty: true,
+    },
+    email: {
+      type: "string",
+      format: "email",
+      isNotEmpty: true,
+    },
+    budget: {
+      type: "string",
+      isNotEmpty: true,
+    },
+    bank: {
+      type: "string",
+      isNotEmpty: true,
+    },
   },
   required: [
-    "task",
-    "assignee",
-    "priority",
-    "status",
-    "start",
-    "due",
-    "repeat",
+    "title",
+    "category",
     "description",
+    "location",
+    "phone",
+    "age",
+    "docs",
+    "cards",
+    "email",
+    "budget",
+    "bank",
   ],
   additionalProperties: true,
 };

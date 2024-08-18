@@ -1,68 +1,71 @@
 const { ObjectId } = require("mongodb");
-const tasks = require("../utils/mongodb").tasks;
+const campaigns = require("../utils/mongodb").campaigns;
 
 const services = {
-  getTasks: () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const tasksList = await tasks().find({}).toArray();
-        resolve(tasksList);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  },
-
-  createTask: (body) => {
+  createCampaign: (body) => {
     return new Promise(async (resolve, reject) => {
       try {
         const timestamp = new Date().toISOString();
-        const task = await tasks().insertOne({ ...body, createdAt: timestamp });
-        resolve(task);
+        const campaign = await campaigns().insertOne({
+          ...body,
+          createdAt: timestamp,
+        });
+        resolve(campaign);
       } catch (error) {
         reject(error);
       }
     });
   },
 
-  getTaskById: (id) => {
+  getCampaigns: () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const objectId = ObjectId.createFromHexString(id);
-        const task = await tasks().findOne({ _id: objectId });
-        resolve(task);
+        const campaignsList = await campaigns().find({}).toArray();
+        resolve(campaignsList);
       } catch (error) {
         reject(error);
       }
     });
   },
 
-  updateTask: (id, body) => {
+  getCampaignById: (id) => {
     return new Promise(async (resolve, reject) => {
       try {
         const objectId = ObjectId.createFromHexString(id);
-        const updatedTask = await tasks().updateOne(
+        const campaign = await campaigns().findOne({ _id: objectId });
+
+        resolve(campaign);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  updateCampaign: (id, body) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const objectId = ObjectId.createFromHexString(id);
+        const campaign = await campaigns().updateOne(
           { _id: objectId },
           { $set: body }
         );
-        resolve(updatedTask);
+        resolve(campaign);
       } catch (error) {
         reject(error);
       }
     });
   },
 
-  deleteTask: (id) => {
+  deleteCampaign: (id) => {
     return new Promise(async (resolve, reject) => {
       try {
         const objectId = ObjectId.createFromHexString(id);
-        const deletedTask = await tasks().deleteOne({ _id: objectId });
-        resolve(deletedTask);
+        const deletedCampaign = await campaigns().deleteOne({ _id: objectId });
+        resolve(deletedCampaign);
       } catch (error) {
         reject(error);
       }
     });
   },
 };
-
 module.exports = services;
