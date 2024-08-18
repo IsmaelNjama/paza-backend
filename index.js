@@ -23,6 +23,7 @@ app.use("/auth", require("./routes/auth.routes"));
 app.use("/users", require("./routes/users.routes"));
 app.use("/tasks", require("./routes/tasks.routes"));
 app.use("/campaigns", require("./routes/campaigns.routes"));
+app.use("/emails", require("./routes/emails.routes"));
 
 app.use(errorHandlerMiddleware);
 

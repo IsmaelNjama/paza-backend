@@ -3,7 +3,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [N
 
 ```bash
 # Clone the github repository
-$ git clone https://github.com/rebeccawaweru/paza-backend
+$ git clone https://github.com/IsmaelNjama/paza-backend.git
 
 # Install dependancies
 $ npm install
