@@ -22,15 +22,12 @@ const schema = {
       isNotEmpty: true,
     },
     age: {
-      type: "boolean",
       isNotEmpty: true,
     },
     docs: {
-      type: "boolean",
       isNotEmpty: true,
     },
     cards: {
-      type: "boolean",
       isNotEmpty: true,
     },
     email: {
