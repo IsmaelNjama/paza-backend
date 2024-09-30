@@ -31,4 +31,7 @@ module.exports = {
   campaigns: () => {
     return db.collection("campaigns");
   },
+  jobs: () => {
+    return db.collection("jobs");
+  },
 };
