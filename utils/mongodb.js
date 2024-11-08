@@ -34,4 +34,10 @@ module.exports = {
   jobs: () => {
     return db.collection("jobs");
   },
+  messages: () => {
+    return db.collection("messages");
+  },
+  conversations: () => {
+    return db.collection("conversations");
+  },
 };

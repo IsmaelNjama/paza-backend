@@ -25,6 +25,7 @@ app.use("/tasks", require("./routes/tasks.routes"));
 app.use("/campaigns", require("./routes/campaigns.routes"));
 app.use("/emails", require("./routes/emails.routes"));
 app.use("/jobs", require("./routes/jobs.routes"));
+app.use("/messages", require("./routes/messages.routes"));
 
 app.use(errorHandlerMiddleware);
 
