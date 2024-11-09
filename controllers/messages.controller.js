@@ -1,21 +1,33 @@
 const messagesServices = require("../services/messages.service");
 
 module.exports = {
-  async createMessage(req, res, next) {
+  createMessage: async (req, res, next) => {
     try {
-      const { body } = req;
-      const response = await messagesServices.createMessage(body);
-      res.status(201).json(response);
+      const { recipient, text } = req.body;
+
+      const sender = req.user._id;
+
+      if (!recipient || !text) {
+        return res.status(400).send("Recipient and text are required");
+      }
+
+      const messageId = await messagesServices.createMessage({
+        sender,
+        recipient,
+        text,
+      });
+      res.status(201).send("Message created successfully");
     } catch (error) {
-      res.status(400).json(error);
+      next(error);
     }
   },
-  async getMessages(req, res, next) {
+
+  getMessages: async (req, res, next) => {
     try {
-      const response = await messagesServices.getMessages();
-      res.status(200).json(response);
+      const messages = await messagesServices.getMessages();
+      res.status(200).send(messages);
     } catch (error) {
-      res.status(400).json(error);
+      next(error);
     }
   },
 };
