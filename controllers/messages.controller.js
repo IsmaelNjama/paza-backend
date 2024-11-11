@@ -24,8 +24,19 @@ module.exports = {
 
   getMessages: async (req, res, next) => {
     try {
-      const messages = await messagesServices.getMessages();
+      const conversationId = req.params.id;
+      const messages = await messagesServices.getMessages(conversationId);
       res.status(200).send(messages);
+    } catch (error) {
+      next(error);
+    }
+  },
+  getConversations: async (req, res, next) => {
+    try {
+      const userId = req.user._id;
+
+      const conversations = await messagesServices.getConversations(userId);
+      res.status(200).send(conversations);
     } catch (error) {
       next(error);
     }
