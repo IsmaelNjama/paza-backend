@@ -31,4 +31,14 @@ module.exports = {
       next(error);
     }
   },
+  getConversations: async (req, res, next) => {
+    try {
+      const userId = req.user._id;
+
+      const conversations = await messagesServices.getConversations(userId);
+      res.status(200).send(conversations);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
