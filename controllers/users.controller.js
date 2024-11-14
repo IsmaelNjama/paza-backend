@@ -68,6 +68,15 @@ module.exports = {
       next(error);
     }
   },
+  //Get all users
+  getUsers: async (req, res, next) => {
+    try {
+      const users = await services.getUsers();
+      res.send(users);
+    } catch (error) {
+      next(error);
+    }
+  },
   getMembers: async (req, res, next) => {
     try {
       const members = await services.getMembers();
