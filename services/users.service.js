@@ -52,6 +52,20 @@ const services = {
     });
   },
 
+  getUsers: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const usersList = await users().find().toArray();
+        const clearedUsers = await Promise.all(
+          usersList.map((user) => services.clearUser(user))
+        );
+        resolve(clearedUsers);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   getUserByEmail: (email) => {
     return new Promise(async (resolve, reject) => {
       try {
