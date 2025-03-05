@@ -2,9 +2,9 @@ name: backend CI
 
 on:
   push:
-    branches: ["main", "ci-workflow"]
+    branches: ["main"]
   pull_request:
-    branches: ["main", "ci-workflow"]
+    branches: ["main"]
 
 jobs:
   build-and-test:
